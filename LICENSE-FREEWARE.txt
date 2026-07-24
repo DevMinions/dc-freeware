@@ -36,8 +36,23 @@ INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING FROM THE USE OF THIS
 SOFTWARE.
 ================================================================
 
-本免费版包含 OPC UA、Modbus、Siemens S7 协议采集与本地 AI 功能。
-不含 OPC DA / AE 与 IEC 60870-5-104（这些依赖 GPL 组件，不在闭源发行范围内）。
-This freeware edition includes OPC UA, Modbus, and Siemens S7 collection
-plus local AI features. It does NOT include OPC DA / AE or IEC 60870-5-104
-(which depend on GPL components excluded from this closed-source distribution).
+五、第三方组件 (Third-Party Components)
+本发行包内含若干第三方开源组件（MIT / Apache-2.0 / BSD-3-Clause），其版权声明与
+许可全文见随包的 THIRD_PARTY_NOTICES.md。上述限制条款不适用于这些组件——它们各自
+按其原许可授权。
+This package bundles third-party open-source components (MIT / Apache-2.0 /
+BSD-3-Clause). Their copyright notices and license texts are in the accompanying
+THIRD_PARTY_NOTICES.md. The restrictions above do not apply to those components,
+which remain licensed under their own terms.
+================================================================
+
+本免费版包含 OPC UA、OPC DA、Modbus、Siemens S7、IEC 60870-5-104 协议采集与本地 AI 功能。
+不含 OPC AE（并非许可原因——其客户端为本项目自行编写；而是首次真机验证时间尚短，
+先在商用版稳定运行一段时间），也不含 EtherNet/IP（同样非许可原因，是尚未在真实
+Allen-Bradley 硬件上验证）。
+This freeware edition includes OPC UA, OPC DA, Modbus, Siemens S7 and
+IEC 60870-5-104 collection plus local AI features. It does NOT include OPC AE
+(not a licensing matter — that client is written in-house; it is simply young,
+and is being soaked in the commercial edition first), nor EtherNet/IP (also not
+a licensing matter — it has not yet been validated against real Allen-Bradley
+hardware).
