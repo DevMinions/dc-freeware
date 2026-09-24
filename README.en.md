@@ -8,7 +8,7 @@ Collect from **OPC UA / OPC DA / Modbus / Siemens S7 / IEC 60870-5-104** devices
 
 **The AI runs entirely on your machine.** No cloud, no telemetry, no data leaving the plant.
 
-**[⬇ Download latest (v1.2.0)](../../releases/latest)** · Windows x64 · ~106 MB · unzip and run `Dc.App.exe` — **.NET runtime bundled, no install required**
+**[⬇ Download latest (v1.3.0)](../../releases/latest)** · Windows x64 · ~100 MB · unzip and run `Dc.App.exe` — **.NET runtime bundled, no install required**
 
 > First launch: Windows SmartScreen will warn about an "unknown publisher" — the release is not code-signed. Click *More info → Run anyway*.
 
@@ -87,11 +87,33 @@ The backend field is **actually probed** — it hooks the native inference log a
 **Only OPC UA and DA are verified against real servers.**
 Modbus, S7 and IEC104 were validated against **soft PLCs, not real hardware** (snap7, an independent CS104 server, a purpose-built Modbus server). Interop was tested seriously — the IEC104 work included a 600-second soak, 299 interrogation rounds, 2100 ASDUs, with values and quality bits correct across five information-object types — but **a soft PLC is not a real PLC.** Validate on your own devices before production.
 
-**No model is bundled.** The 106 MB package contains no weights. Bring your own GGUF (a 4B-class Qwen model is what the screenshots use).
+**No model is bundled.** The 100 MB package contains no weights. Bring your own GGUF (a 4B-class Qwen model is what the screenshots use).
 
 **You want a GPU.** Measured on identical model and prompt: **40 seconds on an RTX 4070 vs 50 minutes still unfinished on CPU** (59.75 tok/s vs 0.5 → 0.185, degrading as context grows). A consumer card is plenty — a 12 GB 4070 fits a 9B model entirely in VRAM at 5.2 GB. Without a GPU, collection is unaffected; the AI features are impractically slow.
 
 **Other limits:** Windows desktop only · not code-signed · closed-source binary, free for non-commercial use · no auto-update · **AI is advisory throughout — it never changes configuration or restarts tasks by itself.** That last one is a deliberate design choice, not an unfinished feature.
+
+---
+
+## What's new in v1.3.0
+
+A stability release.
+
+- **Fixed: wouldn't start when installed under `Program Files`.** The database and logs were written next to the
+  executable, where a normal user has read-only access — so the app exited at startup **with no log at all**. Data
+  now lives in `%LOCALAPPDATA%\Dc` (task database, logs, certificates, UI preferences, offline queue).
+- **Upgrades need no manual copying.** On first run the app finds the previous version's data and copies it over —
+  tasks, tags, UI preferences and OPC UA certificates. The old data is left untouched. Trusted certificates found
+  in a searched folder are only copied after you confirm.
+- **No more false connection timeouts when several devices connect at once** (Modbus, S7) — both used to block
+  thread-pool threads, so concurrent connections queued behind each other.
+- **A dead downstream no longer stalls all publishing** — connecting had no timeout, so an unreachable address
+  froze the send path behind a lock while frames piled up, and the error counters never moved.
+- **The offline queue no longer loses data silently** — buffered data could be skipped forever after a failed
+  cleanup, while pending bytes read 0 and every metric stayed green.
+- **The installer was fixed and verified** end to end (it had never compiled successfully).
+- **Opening a full-edition task no longer rewrites its protocol** — OPC AE / EtherNet/IP tasks keep their protocol
+  and explain why they can't run here.
 
 ---
 
